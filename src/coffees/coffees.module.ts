@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RecEvent } from 'src/events/entities/event.entity';
+import { COFFEE_BRANDS } from './coffees.constants';
 import { CoffeesController } from './coffees.controller';
 import { CoffeesService } from './coffees.service';
 import { Coffee } from './entities/coffee.entity';
@@ -15,7 +16,7 @@ class MockCoffeeService {}
     providers: [
         CoffeesService, 
         {
-            provide: 'COFFEE_BRANDS',
+            provide: COFFEE_BRANDS,
             useValue: ['buddy brew', 'nescafe'] 
         },
         {
