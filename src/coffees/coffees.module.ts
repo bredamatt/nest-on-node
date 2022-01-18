@@ -7,14 +7,14 @@ import { Coffee } from './entities/coffee.entity';
 import { Flavor } from './entities/flavor.entity';
 
 // Value based provider
-class MocCoffeeService {}
+class MockCoffeeService {}
 
 @Module({
     imports: [TypeOrmModule.forFeature([Coffee, Flavor, RecEvent])],
     controllers: [CoffeesController], 
     providers: [{
         provide: CoffeesService,
-        useValue: new MocCoffeeService()
+        useValue: new MockCoffeeService(),
     }],
     exports: [CoffeesService],
 })
