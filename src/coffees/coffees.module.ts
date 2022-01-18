@@ -12,10 +12,17 @@ class MockCoffeeService {}
 @Module({
     imports: [TypeOrmModule.forFeature([Coffee, Flavor, RecEvent])],
     controllers: [CoffeesController], 
-    providers: [{
-        provide: CoffeesService,
-        useValue: new MockCoffeeService(),
-    }],
+    providers: [
+        CoffeesService, 
+        {
+            provide: 'COFFEE_BRANDS',
+            useValue: ['buddy brew', 'nescafe'] 
+        },
+        {
+            provide: 'MOCKUP',
+            useValue: new MockCoffeeService(),
+        }
+    ],
     exports: [CoffeesService],
 })
 export class CoffeesModule {}
