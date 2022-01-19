@@ -5,20 +5,35 @@ import { AppService } from './app.service';
 import { CoffeesModule } from './coffees/coffees.module';
 import { CoffeeRatingModule } from './coffee-rating/coffee-rating.module';
 import { DatabaseModule } from './database/database.module';
+import { ConfigModule } from '@nestjs/config';
+import Joi = require('@hapi/joi');
+import appConfig from './config/app.config';
+
+// Use @hapi/joi
 
 @Module({
   imports: [
-    CoffeesModule,
-    TypeOrmModule.forRoot({
-      type: 'postgres', // type of db
-      host: 'localhost',
-      port: 5432,
-      username: 'postgres',
-      password: 'pass123',
-      database: 'postgres',
-      autoLoadEntities: true,
-      synchronize: true, // automatically creates a sql table from all classes with @Entity decorator (disable this for production)
+    TypeOrmModule.forRootAsync({
+      useFactory: () => ({type: 'postgres',
+        host: process.env.DATABASE_HOST,
+        port: +process.env.DATABASE_PORT,
+        username: process.env.DATABASE_USER,
+        password: process.env.DATABASE_PASSWORD,
+        database: process.env.DATABASE_NAME,
+        autoLoadEntities: true,
+        synchronize: true, // automatically creates a sql table from all classes with @Entity decorator (disable this for production)}) 
+      }),
     }),
+    ConfigModule.forRoot({
+      load: [appConfig],
+      validationSchema: Joi.object({
+        DATABASE_HOST: Joi.required(),
+        DATABASE_PORT: Joi.number().default(5432),
+      })
+      // envFilePath: '.environment', --> Determine path
+      // ignoreEnvFile: true, --> Ignore env
+    }),
+    CoffeesModule,
     CoffeeRatingModule,
     DatabaseModule,
   ],
