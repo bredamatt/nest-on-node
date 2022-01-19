@@ -10,17 +10,18 @@ import { UpdateCoffeeDto } from './dto/update-coffee.dto';
 // @UsePipes(ValidationPipe) --> Used for all route handler methods
 @Controller('coffees')
 export class CoffeesController {
-    constructor(private readonly coffeesService: CoffeesService, 
-        @Inject(REQUEST) private readonly request: Request // this comes from Express, and may add performance overhead
-        ) 
-    {
-        console.log('CoffeesController initialized');
+    constructor(
+        private readonly coffeesService: CoffeesService, 
+        @Inject(REQUEST) private readonly request: Request, // this comes from Express, and may add performance overhead
+    ) {
+        console.log('CoffeesController initialized upon request');
     }
 
     // @UsePipes(ValidationPipe) --> Route specific pipe
     @Public() // Custom decorator
     @Get()
-    findAll(@Query() paginationQuery: PaginationQueryDto) {
+    async findAll(@Query() paginationQuery: PaginationQueryDto) {
+        //await new Promise(resolve => setTimeout(resolve, 5000));
         // const { limit, offset } = paginationQuery;
         return this.coffeesService.findAll(paginationQuery); 
     }

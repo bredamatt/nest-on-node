@@ -28,8 +28,8 @@ export class CoffeesService {
         private readonly coffeesConfiguration: ConfigType<typeof coffeesConfig>,
     ) {
         // const coffeesConfig = this.configService.get('coffees.foo'); // partial registration, can quickly become messy
-        console.log('CoffeesService instantiated');
-        console.log(coffeesConfiguration.foo);
+        // console.log('CoffeesService instantiated');
+        // console.log(coffeesConfiguration.foo);
     }
 
     findAll(paginationQuery: PaginationQueryDto) {
