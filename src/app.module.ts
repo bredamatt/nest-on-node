@@ -9,6 +9,7 @@ import { ConfigModule } from '@nestjs/config';
 import Joi = require('@hapi/joi');
 import appConfig from './config/app.config';
 import { APP_PIPE } from '@nestjs/core';
+import { CommonModule } from './common/common.module';
 
 // Use @hapi/joi
 
@@ -37,6 +38,7 @@ import { APP_PIPE } from '@nestjs/core';
     CoffeesModule,
     CoffeeRatingModule,
     DatabaseModule,
+    CommonModule,
   ],
   controllers: [AppController],
   providers: [
