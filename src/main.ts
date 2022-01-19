@@ -3,6 +3,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 import { ApiKeyGuard } from './common/guards/api-key.guard';
+import { WrapResponseInterceptor } from './common/interceptor/wrap-response.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -14,6 +15,7 @@ async function bootstrap() {
         enableImplicitConversion: true,
       }
   }));
+  app.useGlobalInterceptors(new WrapResponseInterceptor());
   app.useGlobalFilters(new HttpExceptionFilter());
   await app.listen(3000);
 }
