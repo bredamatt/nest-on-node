@@ -1,5 +1,6 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Inject, Param, Patch, Post, Query, SetMetadata, UsePipes, ValidationPipe } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
+import { ApiForbiddenResponse } from '@nestjs/swagger';
 import { Request } from 'express';
 import { Protocol } from 'src/common/decorators/protocol.decorator';
 import { Public } from 'src/common/decorators/public.decorator';
@@ -20,6 +21,7 @@ export class CoffeesController {
     }
 
     // @UsePipes(ValidationPipe) --> Route specific pipe
+    @ApiForbiddenResponse({ description: 'Forbidden' })
     @Public() // Custom decorator
     @Get()
     async findAll(
