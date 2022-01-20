@@ -35,6 +35,7 @@ class ProductionConfigService  {}
     controllers: [CoffeesController], 
     providers: [
         CoffeesService,
+        ConfigService,
         {
             provide: COFFEE_BRANDS,
             useFactory: () => ['buddy brew', 'nescafe'],

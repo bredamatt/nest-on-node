@@ -12,7 +12,7 @@ import { Coffee } from './entities/coffee.entity'
 import { Flavor } from './entities/flavor.entity';
 
 // Scope defines when the service is instantiated, Default = singleton, Transient = per dependent module, Request = per request
-@Injectable({ scope: Scope.REQUEST })
+@Injectable({ scope: Scope.DEFAULT })
 export class CoffeesService {
     constructor(
         @InjectRepository(Coffee)
@@ -24,8 +24,8 @@ export class CoffeesService {
         @Inject(COFFEE_BRANDS) coffeeBrands: string[],
         
         // Preferred approach for partial configuration - leads to strong typing
-        @Inject(coffeesConfig.KEY)
-        private readonly coffeesConfiguration: ConfigType<typeof coffeesConfig>,
+        //@Inject(coffeesConfig.KEY)
+        //private readonly coffeesConfiguration: ConfigType<typeof coffeesConfig>,
     ) {
         // const coffeesConfig = this.configService.get('coffees.foo'); // partial registration, can quickly become messy
         // console.log('CoffeesService instantiated');
@@ -86,27 +86,27 @@ export class CoffeesService {
         return this.coffeeRepository.remove(coffee);
     }
 
-    async recommendCoffe(coffee: Coffee) {
-        const queryRunner = this.connection.createQueryRunner();
-        await queryRunner.connect();
-        await queryRunner.startTransaction();
-        try {
-            coffee.recommendations++;
+    // async recommendCoffe(coffee: Coffee) {
+    //     const queryRunner = this.connection.createQueryRunner();
+    //     await queryRunner.connect();
+    //     await queryRunner.startTransaction();
+    //     try {
+    //         coffee.recommendations++;
 
-            const recommendEvent = new RecEvent();
-            recommendEvent.name = 'recommend_coffee';
-            recommendEvent.type = 'coffee';
-            recommendEvent.payload = { coffeeId: coffee.id };
+    //         const recommendEvent = new RecEvent();
+    //         recommendEvent.name = 'recommend_coffee';
+    //         recommendEvent.type = 'coffee';
+    //         recommendEvent.payload = { coffeeId: coffee.id };
 
-            await queryRunner.manager.save(coffee);
-            await queryRunner.manager.save(recommendEvent);
-            await queryRunner.commitTransaction();
-        } catch (err) {
-            await queryRunner.rollbackTransaction();
-        } finally {
-            await queryRunner.release();
-        } 
-    }
+    //         await queryRunner.manager.save(coffee);
+    //         await queryRunner.manager.save(recommendEvent);
+    //         await queryRunner.commitTransaction();
+    //     } catch (err) {
+    //         await queryRunner.rollbackTransaction();
+    //     } finally {
+    //         await queryRunner.release();
+    //     } 
+    // }
 
     // Used for cascading inserts for flavors
     private async preloadFlavorByName(name: string): Promise<Flavor> {
